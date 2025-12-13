@@ -481,6 +481,10 @@
     position: relative;
   }
 
+  .static {
+    position: static;
+  }
+
   .top-1\/2 {
     top: 50%;
   }
@@ -816,6 +820,10 @@
     padding-inline: calc(var(--spacing) * 2);
   }
 
+  .px-2\.5 {
+    padding-inline: calc(var(--spacing) * 2.5);
+  }
+
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
   }
@@ -929,6 +937,10 @@
 
   .text-green-600 {
     color: var(--color-green-600);
+  }
+
+  .text-green-700 {
+    color: var(--color-green-700);
   }
 
   .text-green-800 {

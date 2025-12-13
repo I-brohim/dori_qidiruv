@@ -129,9 +129,14 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-600">
-                {t('header.search')}
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-600">
+                  {t('header.search')}
+                </h1>
+                <span className="px-2.5 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full border border-green-300 shadow-sm">
+                  {t('header.last_updated')}
+                </span>
+              </div>
               <p className="text-sm text-black mt-1">
                 {medicines.length.toLocaleString()} {t('header.medicines_available')}
               </p>
