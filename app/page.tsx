@@ -51,6 +51,10 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
+      // When search is made, switch to 'all' filter
+      if (searchQuery.trim()) {
+        setPrescriptionFilter('all');
+      }
     }, 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
