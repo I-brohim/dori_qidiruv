@@ -19,7 +19,7 @@ interface LanguageContextType {
 
 const translations: Translations = {
   // Header
-  'header.search': { uz: 'Qidiruv', ru: 'Поиск' },
+  'header.search': { uz: 'Doritopdim', ru: 'Doritopdim' },
   'header.sources': { uz: 'Manbalar', ru: 'Источники' },
   'header.medicines_available': { uz: 'ta dori mavjud', ru: 'лекарств доступно' },
   'header.sources_title': { uz: 'Manbalar', ru: 'Источники' },
