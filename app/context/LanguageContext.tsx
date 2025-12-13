@@ -24,7 +24,7 @@ const translations: Translations = {
   'header.medicines_available': { uz: 'ta dori mavjud', ru: 'лекарств доступно' },
   'header.sources_title': { uz: 'Manbalar', ru: 'Источники' },
   'header.sources_subtitle': { uz: "Ma'lumot manbalari", ru: 'Источники информации' },
-  'header.last_updated': { uz: "13.12.2025da yangilangan", ru: 'обновлено: 13.12.2025' },
+  'header.last_updated': { uz: "12.12.2025da yangilangan", ru: 'обновлено: 12.12.2025' },
   
   // Search
   'search.placeholder': { 
