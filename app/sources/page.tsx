@@ -24,12 +24,6 @@ export default function Sources() {
                   Qidiruv
                 </Link>
                 <Link 
-                  href="/categories"
-                  className="text-sm font-semibold text-gray-700 hover:text-green-600 transition-colors"
-                >
-                  Kategoriyalar
-                </Link>
-                <Link 
                   href="/sources"
                   className="text-sm font-semibold text-green-600"
                 >
