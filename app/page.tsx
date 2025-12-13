@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Fuse from 'fuse.js';
 import Link from 'next/link';
+import { useLanguage } from './context/LanguageContext';
 
 interface Medicine {
   id: string;
@@ -23,6 +24,7 @@ interface Medicine {
 }
 
 export default function Home() {
+  const { language, setLanguage, t } = useLanguage();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -128,25 +130,48 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <h1 className="text-2xl md:text-3xl font-bold text-gray-600">
-                Qidiruv
+                {t('header.search')}
               </h1>
               <p className="text-sm text-black mt-1">
-                {medicines.length.toLocaleString()} ta dori mavjud
+                {medicines.length.toLocaleString()} {t('header.medicines_available')}
               </p>
             </div>
             <div className="flex items-center gap-4 justify-end">
+              {/* Language Switcher */}
+              <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setLanguage('uz')}
+                  className={`px-2 py-1 text-xs font-semibold rounded transition-colors ${
+                    language === 'uz'
+                      ? 'bg-white text-gray-800 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  UZ
+                </button>
+                <button
+                  onClick={() => setLanguage('ru')}
+                  className={`px-2 py-1 text-xs font-semibold rounded transition-colors ${
+                    language === 'ru'
+                      ? 'bg-white text-gray-800 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  RU
+                </button>
+              </div>
               <div className="flex gap-3 items-center">
                 <Link 
                   href="/"
                   className="text-sm font-semibold text-green-600"
                 >
-                  Qidiruv
+                  {t('header.search')}
                 </Link>
                 <Link 
                   href="/sources"
                   className="text-sm font-semibold text-gray-700 hover:text-green-600 transition-colors"
                 >
-                  Manbalar
+                  {t('header.sources')}
                 </Link>
               </div>
             </div>
@@ -160,7 +185,7 @@ export default function Home() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Dori nomi, faol modda yoki ishlab chiqaruvchini kiriting..."
+              placeholder={t('search.placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-3 md:py-4 pl-12 text-base md:text-lg rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 bg-white text-black"
@@ -181,7 +206,7 @@ export default function Home() {
           </div>
           {searchQuery && (
             <p className="text-sm text-black mt-2">
-              {filteredMedicines.length} ta natija topildi
+              {filteredMedicines.length} {t('search.results_found')}
             </p>
           )}
           
@@ -195,7 +220,7 @@ export default function Home() {
                   : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
               }`}
             >
-              Retseptsiz
+              {t('filter.no_prescription')}
             </button>
             <button
               onClick={() => setPrescriptionFilter('with')}
@@ -205,7 +230,7 @@ export default function Home() {
                   : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
               }`}
             >
-              Retsept bilan
+              {t('filter.with_prescription')}
             </button>
             <button
               onClick={() => setPrescriptionFilter('all')}
@@ -215,7 +240,7 @@ export default function Home() {
                   : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
               }`}
             >
-              Hammasi
+              {t('filter.all')}
             </button>
           </div>
         </div>
@@ -224,7 +249,7 @@ export default function Home() {
         {loading && (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-            <p className="mt-4 text-black">Yuklanmoqda...</p>
+            <p className="mt-4 text-black">{t('search.loading')}</p>
           </div>
         )}
 
@@ -234,7 +259,7 @@ export default function Home() {
             {filteredMedicines.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-xl text-gray-600">
-                  {searchQuery ? 'Hech narsa topilmadi' : 'Qidiruvni boshlang'}
+                  {searchQuery ? t('search.no_results') : t('search.start_search')}
                 </p>
               </div>
             ) : (
@@ -251,16 +276,16 @@ export default function Home() {
                       <div className="space-y-1 text-sm md:text-base">
                         {medicine.dosageForm && (
                           <p className="text-black text-sm md:text-base">
-                            <span className="font-semibold">Dori shakli:</span> {medicine.dosageForm}
+                            <span className="font-semibold">{t('medicine.dosage_form')}</span> {medicine.dosageForm}
                           </p>
                         )}
                         {medicine.activeIngredient && (
                           <p className="text-black hidden md:block">
-                            <span className="font-semibold">Faol modda:</span> {medicine.activeIngredient}
+                            <span className="font-semibold">{t('medicine.active_ingredient')}</span> {medicine.activeIngredient}
                           </p>
                         )}
                         <p className="text-black text-sm md:text-base hidden md:block">
-                          <span className="font-semibold">Ishlab chiqaruvchi:</span> {medicine.manufacturer}
+                          <span className="font-semibold">{t('medicine.manufacturer')}</span> {medicine.manufacturer}
                         </p>
                         {medicine.packaging && (
                           <p className="text-gray-600 text-xs md:text-sm hidden md:block">
@@ -269,7 +294,7 @@ export default function Home() {
                         )}
                         {medicine.pharmacotherapyGroup && (
                           <p className="text-gray-600 text-sm hidden md:block">
-                            <span className="font-semibold">Guruh:</span> {medicine.pharmacotherapyGroup}
+                            <span className="font-semibold">{t('medicine.group')}</span> {medicine.pharmacotherapyGroup}
                           </p>
                         )}
                       </div>
@@ -284,8 +309,8 @@ export default function Home() {
                           }`}
                         >
                           {medicine.dispensingCondition === 'По рецепту' || medicine.prescriptionRequired === true 
-                            ? 'Retsept bilan' 
-                            : 'Retseptsiz'}
+                            ? t('medicine.prescription_required')
+                            : t('medicine.no_prescription')}
                         </span>
                       </div>
                     </div>
@@ -300,8 +325,8 @@ export default function Home() {
                         }`}
                       >
                         {medicine.dispensingCondition === 'По рецепту' || medicine.prescriptionRequired === true 
-                          ? 'Retsept bilan' 
-                          : 'Retseptsiz'}
+                          ? t('medicine.prescription_required')
+                          : t('medicine.no_prescription')}
                       </span>
                     </div>
                   </div>
@@ -315,12 +340,12 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white mt-12 py-6 border-t-2 border-green-200">
         <div className="container mx-auto px-4 text-center text-sm text-black">
-          <p>Dorilar ro'yxati - {new Date().getFullYear()}</p>
+          <p>{t('footer.medicines_list')} - {new Date().getFullYear()}</p>
           <Link 
             href="/sources" 
             className="text-green-600 hover:text-green-700 font-semibold mt-2 inline-block"
           >
-            Manbalar →
+            {t('footer.sources_link')}
           </Link>
         </div>
       </footer>
