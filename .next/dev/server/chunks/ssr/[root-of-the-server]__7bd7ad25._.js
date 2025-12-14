@@ -42,8 +42,8 @@ const translations = {
         ru: 'Источники информации'
     },
     'header.last_updated': {
-        uz: "13.12.2025da yangilangan",
-        ru: 'обновлено: 13.12.2025'
+        uz: "oxirgi yangilanish: 12.12.2025da",
+        ru: 'обновлено: 12.12.2025'
     },
     // Search
     'search.placeholder': {

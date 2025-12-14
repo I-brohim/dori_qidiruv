@@ -30,6 +30,8 @@ export default function Home() {
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [prescriptionFilter, setPrescriptionFilter] = useState<'all' | 'with' | 'without'>('without');
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   useEffect(() => {
     // Load both medicine lists
@@ -53,6 +55,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
+      setCurrentPage(1); // Reset to first page on search
       // When search is made, switch to 'all' filter
       if (searchQuery.trim()) {
         setPrescriptionFilter('all');
@@ -119,8 +122,15 @@ export default function Home() {
       });
     }
     
-    return results.slice(0, 50);
+    return results;
   }, [debouncedQuery, prescriptionFilter, medicines, fuse, latinToCyrillic]);
+
+  const totalPages = Math.ceil(filteredMedicines.length / itemsPerPage);
+  const paginatedMedicines = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredMedicines.slice(startIndex, endIndex);
+  }, [filteredMedicines, currentPage, itemsPerPage]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100">
@@ -129,14 +139,9 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-600">
-                  {t('header.search')}
-                </h1>
-                <span className="px-2.5 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full border border-green-300 shadow-sm">
-                  {t('header.last_updated')}
-                </span>
-              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-600">
+                {t('header.search')}
+              </h1>
               <p className="text-sm text-black mt-1">
                 {medicines.length.toLocaleString()} {t('header.medicines_available')}
               </p>
@@ -184,6 +189,17 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Last Updated Tag */}
+      <div className="bg-gray-50 border-b border-gray-200 py-2">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-green-100 text-green-700 rounded-full border border-green-300 shadow-sm">
+              {t('header.last_updated')}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Search Section */}
       <main className="container mx-auto px-4 py-6 md:py-8">
         <div className="max-w-2xl mx-auto mb-6">
@@ -218,7 +234,7 @@ export default function Home() {
           {/* Prescription Filter */}
           <div className="flex gap-2 mt-3">
             <button
-              onClick={() => setPrescriptionFilter('without')}
+              onClick={() => { setPrescriptionFilter('without'); setCurrentPage(1); }}
               className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                 prescriptionFilter === 'without'
                   ? 'bg-green-600 text-white border-green-600'
@@ -228,7 +244,7 @@ export default function Home() {
               {t('filter.no_prescription')}
             </button>
             <button
-              onClick={() => setPrescriptionFilter('with')}
+              onClick={() => { setPrescriptionFilter('with'); setCurrentPage(1); }}
               className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                 prescriptionFilter === 'with'
                   ? 'bg-red-600 text-white border-red-600'
@@ -238,7 +254,7 @@ export default function Home() {
               {t('filter.with_prescription')}
             </button>
             <button
-              onClick={() => setPrescriptionFilter('all')}
+              onClick={() => { setPrescriptionFilter('all'); setCurrentPage(1); }}
               className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                 prescriptionFilter === 'all'
                   ? 'bg-gray-600 text-white border-gray-600'
@@ -268,7 +284,7 @@ export default function Home() {
                 </p>
               </div>
             ) : (
-              filteredMedicines.map((medicine) => (
+              paginatedMedicines.map((medicine) => (
                 <div
                   key={medicine.id}
                   className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-3 md:p-6 border border-gray-200"
@@ -340,18 +356,96 @@ export default function Home() {
             )}
           </div>
         )}
+
+        {/* Pagination */}
+        {!loading && filteredMedicines.length > 0 && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              ←
+            </button>
+            
+            <div className="flex gap-1 items-center">
+              {(() => {
+                const pages = [];
+                
+                if (totalPages <= 7) {
+                  // Show all pages if 7 or fewer
+                  for (let i = 1; i <= totalPages; i++) {
+                    pages.push(i);
+                  }
+                } else {
+                  // Always show first page
+                  pages.push(1);
+                  
+                  if (currentPage <= 3) {
+                    // Near start: show 1, 2, 3, 4, ..., last
+                    pages.push(2, 3, 4);
+                    pages.push('ellipsis-end');
+                    pages.push(totalPages);
+                  } else if (currentPage >= totalPages - 2) {
+                    // Near end: show 1, ..., last-3, last-2, last-1, last
+                    pages.push('ellipsis-start');
+                    pages.push(totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+                  } else {
+                    // Middle: show 1, ..., current-1, current, current+1, ..., last
+                    pages.push('ellipsis-start');
+                    pages.push(currentPage - 1, currentPage, currentPage + 1);
+                    pages.push('ellipsis-end');
+                    pages.push(totalPages);
+                  }
+                }
+                
+                return pages.map((page, idx) => {
+                  if (typeof page === 'string') {
+                    return (
+                      <span key={page} className="px-2 text-gray-500">
+                        ...
+                      </span>
+                    );
+                  }
+                  
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded-lg border transition-colors ${
+                        currentPage === page
+                          ? 'bg-green-600 text-white border-green-600'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                });
+              })()}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              →
+            </button>
+          </div>
+        )}
       </main>
 
       {/* Footer */}
       <footer className="bg-white mt-12 py-6 border-t-2 border-green-200">
-        <div className="container mx-auto px-4 text-center text-sm text-black">
-          <p>{t('footer.medicines_list')} - {new Date().getFullYear()}</p>
+        <div className="container mx-auto px-4 text-center text-sm text-gray-600">
           <Link 
             href="/sources" 
-            className="text-green-600 hover:text-green-700 font-semibold mt-2 inline-block"
+            className="text-green-600 hover:text-green-700 font-semibold inline-block mb-3"
           >
             {t('footer.sources_link')}
           </Link>
+          <p className="text-gray-500 text-xs">Mehr bilan, Ibrohim Iskandarov</p>
         </div>
       </footer>
     </div>
