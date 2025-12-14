@@ -31,7 +31,7 @@ export default function Home() {
   const [prescriptionFilter, setPrescriptionFilter] = useState<'all' | 'with' | 'without'>('without');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     // Load both medicine lists
