@@ -37,8 +37,8 @@ const translations = {
         ru: 'Источники информации'
     },
     'header.last_updated': {
-        uz: "oxirgi yangilanish: 12.12.2025da",
-        ru: 'обновлено: 12.12.2025'
+        uz: "oxirgi yangilanish: 16.12.2025da",
+        ru: 'обновлено: 16.12.2025'
     },
     // Search
     'search.placeholder': {
@@ -120,6 +120,19 @@ const translations = {
     'sources.title2': {
         uz: "Cheklangan narxlar ro'yxati",
         ru: 'Список предельных цен'
+    },
+    // Service update
+    'update.title': {
+        uz: 'Yangilanish haqida',
+        ru: 'Обновление сервиса'
+    },
+    'update.message': {
+        uz: "Elektron retsept tizimi bo'yicha yangi tartiblar joriy etilayotgani sababli Dorixona xizmati vaqtincha to'xtatildi. Xizmat yangilangan talablar asosida qayta ishga tushiriladi.",
+        ru: 'В связи с введением новых правил по системе электронных рецептов сервис Dorixona временно приостановлен. Работа будет возобновлена после адаптации к обновлённым требованиям.'
+    },
+    'update.read_more': {
+        uz: "Batafsil o'qish →",
+        ru: 'Читать подробнее →'
     }
 };
 const LanguageContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContext"])(undefined);
@@ -151,7 +164,7 @@ function LanguageProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/app/context/LanguageContext.tsx",
-        lineNumber: 85,
+        lineNumber: 93,
         columnNumber: 5
     }, this);
 }

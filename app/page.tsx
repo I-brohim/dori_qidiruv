@@ -200,9 +200,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Search Section */}
+      {/* Search Section - Hidden but code preserved */}
       <main className="container mx-auto px-4 py-6 md:py-8">
-        <div className="max-w-2xl mx-auto mb-6">
+        <div className="max-w-2xl mx-auto mb-6" style={{ display: 'none' }}>
           <div className="relative">
             <input
               type="text"
@@ -266,7 +266,43 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Loading State */}
+        {/* Service Update Message */}
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 border-2 border-yellow-200">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="flex-shrink-0 mt-1">
+                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">
+                  {t('update.title')}
+                </h2>
+                <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-4">
+                  {t('update.message')}
+                </p>
+                <a
+                  href={language === 'uz' 
+                    ? 'https://telegra.ph/EHlektron-recept-tizimini-zhorij-ehtish-masalalari-mu%D2%B3okama-%D2%9Bilindi-12-14'
+                    : 'https://telegra.ph/Obsuzhdeny-voprosy-vnedreniya-sistemy-EHlektronnyj-recept-12-14'
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold transition-colors"
+                >
+                  {t('update.read_more')}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Loading State - Hidden but code preserved */}
+        <div style={{ display: 'none' }}>
         {loading && (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
@@ -274,7 +310,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Results */}
+        {/* Results - Hidden but code preserved */}
         {!loading && (
           <div className="grid gap-4 md:gap-6">
             {filteredMedicines.length === 0 ? (
@@ -357,7 +393,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Pagination */}
+        {/* Pagination - Hidden but code preserved */}
         {!loading && filteredMedicines.length > 0 && totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mt-8">
             <button
@@ -434,6 +470,7 @@ export default function Home() {
             </button>
           </div>
         )}
+        </div>
       </main>
 
       {/* Footer */}

@@ -24,7 +24,7 @@ const translations: Translations = {
   'header.medicines_available': { uz: 'ta dori mavjud', ru: 'лекарств доступно' },
   'header.sources_title': { uz: 'Manbalar', ru: 'Источники' },
   'header.sources_subtitle': { uz: "Ma'lumot manbalari", ru: 'Источники информации' },
-  'header.last_updated': { uz: "oxirgi yangilanish: 12.12.2025da", ru: 'обновлено: 12.12.2025' },
+  'header.last_updated': { uz: "oxirgi yangilanish: 16.12.2025da", ru: 'обновлено: 16.12.2025' },
   
   // Search
   'search.placeholder': { 
@@ -57,6 +57,14 @@ const translations: Translations = {
   'sources.title1': { uz: 'Retseptsiz beriladigan dori vositalari', ru: 'Лекарства, отпускаемые без рецепта' },
   'sources.telegram_view': { uz: "Telegram kanalida ko'rish", ru: 'Посмотреть в Telegram канале' },
   'sources.title2': { uz: "Cheklangan narxlar ro'yxati", ru: 'Список предельных цен' },
+  
+  // Service update
+  'update.title': { uz: 'Yangilanish haqida', ru: 'Обновление сервиса' },
+  'update.message': { 
+    uz: "Elektron retsept tizimi bo'yicha yangi tartiblar joriy etilayotgani sababli Dorixona xizmati vaqtincha to'xtatildi. Xizmat yangilangan talablar asosida qayta ishga tushiriladi.",
+    ru: 'В связи с введением новых правил по системе электронных рецептов сервис Dorixona временно приостановлен. Работа будет возобновлена после адаптации к обновлённым требованиям.'
+  },
+  'update.read_more': { uz: "Batafsil o'qish →", ru: 'Читать подробнее →' },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
